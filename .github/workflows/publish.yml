@@ -1,4 +1,4 @@
-name: Build and Deploy Raylib Game
+name: Publicar proyecto
 
 on:
   push:
@@ -9,31 +9,15 @@ permissions:
   contents: write
 
 jobs:
-  build:
+  publicar:
     runs-on: ubuntu-latest
 
     steps:
       - name: Clonar repositorio
         uses: actions/checkout@v4
 
-      - name: Instalar Emscripten
-        uses: mymindstorm/setup-emsdk@v14
-        with:
-          version: latest
-
-      - name: Compilar juego
-        run: |
-          emcc main.cpp \
-          -o index.html \
-          -I./include \
-          -L./lib \
-          -lraylib \
-          -s USE_GLFW=3 \
-          -s ASYNCIFY
-
       - name: Publicar en GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: .
-        
